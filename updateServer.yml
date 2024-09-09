@@ -1,8 +1,10 @@
 ---
-  - name: "check if the apache is running"
+  - name: "check if the apache is running and installed"
     hosts: linux
     become: true
     become_user: root
+    vars_files:
+      - vault.yml
     tasks:
 
     - name: Update apt package cache
