@@ -1,0 +1,9 @@
+---
+- hosts: linux
+  become: true
+  become_user: root
+  vars_files:
+    - vault.yml
+  roles:
+    - updateServer
+    - installApache

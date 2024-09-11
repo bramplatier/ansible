@@ -1,0 +1,33 @@
+---
+- name: Update apt package cache
+  apt:
+    update_cache: yes
+
+- name: Upgrade all packages to latest version
+  apt:
+    upgrade: dist
+    autoremove: yes
+
+- name: Clean up cached package files
+  apt:
+    autoclean: yes
+    autoremove: yes
+
+- name: Check for pending updates
+  command: apt list --upgradable
+  register: upgradable_packages
+  changed_when: false
+  tags:
+    - Display
+
+- name: Check if a reboot is needed for servers
+  register: reboot_required_file
+  stat:
+      path: /var/run/reboot-required 
+      get_checksum: no
+        
+- name: Display upgradable packages
+  debug:
+    msg: "{{ upgradable_packages.stdout }}"
+  tags:
+    - Display
