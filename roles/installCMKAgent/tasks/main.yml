@@ -1,0 +1,33 @@
+---
+  - name: Download the Checkmk Agent .deb file
+    get_url:
+      url: http://172.16.2.12/monitoring/check_mk/agents/check-mk-agent_2.3.0p15-1_all.deb
+      dest: /tmp/check-mk-agent_2.3.0p15-1_all.deb
+
+  - name: Install the Checkmk Agent
+    apt:
+      deb: /tmp/check-mk-agent_2.3.0p15-1_all.deb
+      state: present
+    # Use `apt` instead of `command` to handle dependencies correctly
+
+  - name: Ensure the Checkmk Agent service is running and enabled
+    systemd:
+      name: check-mk-agent-async
+      state: started
+      enabled: yes
+
+  - name: Allow TCP port 6556 in the firewall
+    ufw:
+      rule: allow
+      port: '6556'
+      proto: tcp
+
+  - name: Allow UDP port 161 in the firewall
+    ufw:
+      rule: allow
+      port: '161'
+      proto: udp
+
+  - name: Reload UFW to apply changes
+    ufw:
+      state: reloaded
