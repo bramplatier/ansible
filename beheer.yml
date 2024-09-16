@@ -7,3 +7,4 @@
   roles:
     - updateServer
     - installApache
+    - installCMKAgent
