@@ -5,6 +5,9 @@
   vars_files:
     - vault.yml
   roles:
-    - updateServer
-    - installApache
-    - installCMKAgent
+    - role: updateServer
+      tags: updateServers
+    - role: installApache
+      tags: installApache2
+    - role: installCMKAgent
+      tags: CMK

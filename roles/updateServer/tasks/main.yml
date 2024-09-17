@@ -34,7 +34,7 @@
 - name: Reboot the server if needed with a timeout
   reboot:
     msg: "Reboot initiated by Ansible because a reboot is required after updates."
-    reboot_timeout: 600   # Timeout van 10 minuten (600 seconden)
-    pre_reboot_delay: 0   # Geen vertraging voor de reboot
-    post_reboot_delay: 30 # Wacht 30 seconden na de reboot voordat verder wordt gegaan
+    reboot_timeout: 600
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
   when: reboot_required_file.stat.exists
