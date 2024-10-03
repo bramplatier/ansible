@@ -63,7 +63,7 @@
           {% elif registration_result.stderr is defined %}
             "Error during registration: {{ registration_result.stderr }}"
           {% else %}
-            "Lekker beziggggg je hebt een agent en het was al geregistreerd! 😘"
+            "Lekker beziggggg je hebt een agent  😘"
           {% endif %}
         {% else %}
           "Registration task did not execute properly or returned no results."

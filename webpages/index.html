@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ik hou van jou</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        h1 {
+            margin: 0;
+        }
+        .heart {
+            font-size: 50px;
+            cursor: pointer;
+            color: red;
+            transition: transform 0.3s ease-in-out;
+        }
+        .heart:hover {
+            transform: scale(2);
+        }
+        .arrow {
+            font-size: 30px;
+            color: black;
+            position: relative;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+        .link-text {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+        .link-text:hover {
+            color: darkblue;
+        }
+        .arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+
+        /* Afbeelding instellingen */
+        .corner-image {
+            position: absolute;
+            width: 250px; /* Breedte aangepast voor verticale afbeeldingen */
+            height: 350px; /* Grotere hoogte voor verticale afbeeldingen */
+        }
+
+        /* Plaats de afbeeldingen iets naar het midden */
+        .top-left {
+            top: 10%;
+            left: 10%;
+        }
+        .top-right {
+            top: 10%;
+            right: 10%;
+        }
+        .bottom-left {
+            bottom: 10%;
+            left: 10%;
+        }
+        .bottom-right {
+            bottom: 10%;
+            right: 10%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hoi, welkom! Dit heeft Bram Platier gemaakt.</h1>
+    <div>
+        <h2>i <3 you</h2>
+        <div style="display: flex; align-items: center;">
+            <div class="arrow-container">
+                <span class="arrow">➡️</span>
+            </div>
+            <span class="heart" onclick="window.location.href='orchestration.html';">❤️</span>
+            <div class="arrow-container">
+                <span class="arrow">⬅️</span>
+            </div>
+        </div>
+        <span class="link-text">Klik op mij</span> <!-- Tekst onder het hart -->
+    </div>
+
+    <!-- Verticale plaatjes in de hoeken, met grotere afmetingen -->
+    <img src="img/cutestijn.jpeg" alt="Linksboven" class="corner-image top-left">
+    <img src="img/eetstijn.jpeg" alt="Rechtsboven" class="corner-image top-right">
+    <img src="img/hoerstijn.jpeg" alt="Linksonder" class="corner-image bottom-left">
+    <img src="img/sleepstijn.jpeg" alt="Rechtsonder" class="corner-image bottom-right">
+</body>
+</html>

@@ -1,0 +1,8 @@
+---
+- name: update inventory
+  add_host:
+    name: "{{ vm_name }}"
+    ansible_host: "{{ ipvanmachine }}"
+    ansible_user: student
+    ansible_ssh_pass: BrownGreen78!
+    groups: deployed_vms

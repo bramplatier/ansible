@@ -12,3 +12,20 @@
   service:
     name: apache2
     state: started
+    enabled: yes
+
+- name: Copy website files to the web server
+  copy:
+    src: /home/student/ansible/webpages/
+    dest: /var/www/html/                
+    owner: www-data                     
+    group: www-data
+    mode: '0755' #read write permissie                       
+
+- name: Ensure proper permissions on the web directory
+  file:
+    path: /var/www/html/
+    owner: www-data
+    group: www-data
+    mode: '0755'
+    recurse: yes
