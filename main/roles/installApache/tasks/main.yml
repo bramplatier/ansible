@@ -16,7 +16,7 @@
 
 - name: Copy website files to the web server
   copy:
-    src: /home/student/ansible/webpages/
+    src: /home/student/ansible/main/webpages/
     dest: /var/www/html/                
     owner: www-data                     
     group: www-data
