@@ -6,7 +6,3 @@
     password: "{{ 'BrownGreen78!' | password_hash('sha512') }}" 
     update_password: always
   ignore_errors: true
-#- name: Change password for the student user
-#  ansible.builtin.user:
-#    name: student
-#    password: "{{ 'BrownGreen78!' | password_hash('sha512') }}"

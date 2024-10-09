@@ -1,0 +1,42 @@
+---
+- name: Deploy a virtual machine from template
+  vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    datacenter: "{{ vcenter_datacenter }}"
+    datastore: "{{ vcenter_datastore }}"
+    folder: "{{ vm_folder }}"
+    template: "{{ vm_template }}"
+    name: "{{ vm_name }}"
+    resource_pool: "{{ recourse_pool_name }}"
+    cluster: "{{ cluster_name }}"
+    state: poweredon
+    hardware:
+      memory_mb: 4096
+      num_cpus: 2
+    networks:
+      - name: "{{ vm_network }}"
+        ip: "{{ ipvanmachine }}"
+        netmask: "255.255.255.0"
+        gateway: "172.16.2.1"
+    wait_for_ip_address: yes
+  delegate_to: localhost
+
+- name: Wait for SSH to become available
+  wait_for:
+    host: "{{ ipvanmachine }}"
+    port: 22
+    delay: 10
+    timeout: 300
+    state: started
+  delegate_to: localhost
+
+- name: Add new VM to inventory
+  add_host:
+    name: "{{ vm_name }}"
+    ansible_host: "{{ ipvanmachine }}"
+    ansible_user: student
+    ansible_ssh_pass: student
+    groups: deployed_vms

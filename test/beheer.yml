@@ -1,0 +1,91 @@
+# Fase 1: VM aanmaken op de localhost (Ansible server)
+- hosts: localhost
+  become: true
+  become_user: root
+  vars_files:
+    - testvault.yml
+    - vmlist.yml
+  roles:
+    - role: createVM
+      tags: createVM
+
+# Fase 2: Wachten tot de nieuwe VM (deployed_vms) beschikbaar is en wachtoord update
+- hosts: deployed_vms
+  gather_facts: False
+  become: true
+  vars:
+    ansible_ssh_user: "student"
+    ansible_ssh_pass: "student"
+    ansible_become_pass: "student"
+  tasks:
+    - name: Wait for new VMs to be reachable via SSH
+      wait_for_connection:
+        delay: 10
+        timeout: 300
+
+    - name: Create user on the VM
+      include_role:
+        name: createUser
+      tags: create_user
+
+#fase 3
+- hosts: localhost
+  become: true
+  become_user: root
+  vars_files:
+    - testvault.yml
+    - vmlist.yml
+  tasks:
+    - name: update inv
+      include_role:
+        name: updateInventory
+      tags: updateInventory
+
+#fase 4
+- hosts: deployed_vms
+  become: true
+  become_user: root
+  vars_files:
+    - testvault.yml
+  tasks:
+    - name: Update the new VM
+      include_role:
+        name: updateServer
+      tags: updateServers
+
+    - name: Install Apache on the new VM
+      include_role:
+        name: installApache
+      tags: installApache2
+
+    - name: Install CMK agent on the new VM
+      include_role:
+        name: installCMKAgent
+      tags: CMK
+
+# Fase 5
+- hosts: linux
+  become: true
+  become_user: root
+  vars_files:
+    - testvault.yml
+  tasks:
+    - name: Wait for all Linux servers to be reachable via SSH
+      wait_for_connection:
+        delay: 10
+        timeout: 60
+
+    - name: Update all Linux servers
+      include_role:
+        name: updateServer
+      tags: updateServers
+
+    - name: Install Apache on all Linux servers
+      include_role:
+        name: installApache
+      tags: installApache2
+
+    - name: Install CMK agent on all Linux servers
+      include_role:
+        name: installCMKAgent
+      tags: CMK

@@ -9,7 +9,7 @@
     - role: createVM
       tags: createVM
 
-# Fase 2: Wachten tot de nieuwe VM (deployed_vms) beschikbaar is
+# Fase 2: Wachten tot de nieuwe VM (deployed_vms) beschikbaar is en wachtoord update
 - hosts: deployed_vms
   gather_facts: False
   become: true
