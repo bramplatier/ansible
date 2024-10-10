@@ -21,7 +21,7 @@
     - name: Wait for new VMs to be reachable via SSH
       wait_for_connection:
         delay: 10
-        timeout: 300
+        timeout: 60
 
     - name: Create user on the VM
       include_role:
