@@ -9,7 +9,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Clone the repository from GitHub
                     git url: 'https://github.com/bramplatier/ansible.git', branch: 'main'
                 }
             }
@@ -19,12 +18,10 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'vault-pass', variable: 'VAULT_PASS')]) {
-                        // Schrijf het vault-wachtwoord naar een bestand
                         sh ''' 
                             echo "$VAULT_PASS" > vault_pass.txt 
                         '''
 
-                        // Voer het Ansible playbook uit voor de testomgeving
                         sh '''
                             ansible-playbook test/beheer.yml -i test/inventory.ini --vault-password-file vault_pass.txt
                         '''
@@ -36,7 +33,6 @@ pipeline {
         stage('Approval for Production') {
             steps {
                 script {
-                    // Vraag goedkeuring voor productie-implementatie
                     input message: 'Bevestig om door te gaan naar productie?', ok: 'Doorgaan naar productie'
                 }
             }
@@ -46,12 +42,10 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'vault-pass', variable: 'VAULT_PASS')]) {
-                        // Schrijf het vault-wachtwoord naar een bestand
                         sh ''' 
                             echo "$VAULT_PASS" > vault_pass.txt 
                         '''
 
-                        // Voer het Ansible playbook uit voor de productieomgeving
                         sh '''
                             ansible-playbook main/beheer.yml -i main/inventory.ini --vault-password-file vault_pass.txt
                         '''
