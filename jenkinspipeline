@@ -1,0 +1,76 @@
+pipeline {
+    agent any
+
+    environment {
+        ANSIBLE_HOST_KEY_CHECKING = 'False'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Clone the repository from GitHub
+                    git url: 'https://github.com/bramplatier/ansible.git', branch: 'main'
+                }
+            }
+        }
+
+        stage('Deploy to Test') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'vault-pass', variable: 'VAULT_PASS')]) {
+                        // Schrijf het vault-wachtwoord naar een bestand
+                        sh ''' 
+                            echo "$VAULT_PASS" > vault_pass.txt 
+                        '''
+
+                        // Voer het Ansible playbook uit voor de testomgeving
+                        sh '''
+                            ansible-playbook test/beheer.yml -i test/inventory.ini --vault-password-file vault_pass.txt
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Approval for Production') {
+            steps {
+                script {
+                    // Vraag goedkeuring voor productie-implementatie
+                    input message: 'Bevestig om door te gaan naar productie?', ok: 'Doorgaan naar productie'
+                }
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'vault-pass', variable: 'VAULT_PASS')]) {
+                        // Schrijf het vault-wachtwoord naar een bestand
+                        sh ''' 
+                            echo "$VAULT_PASS" > vault_pass.txt 
+                        '''
+
+                        // Voer het Ansible playbook uit voor de productieomgeving
+                        sh '''
+                            ansible-playbook main/beheer.yml -i main/inventory.ini --vault-password-file vault_pass.txt
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+            sh 'rm -f vault_pass.txt'
+        }
+        success {
+            echo 'Deployment completed successfully!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
+}
