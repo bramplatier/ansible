@@ -1,0 +1,6 @@
+---
+- name: addhosts
+  ansible.builtin.import_tasks: addhost.yml
+
+- name: RunServiceDiscovery
+  ansible.builtin.import_tasks: RunServiceDiscovery.yml

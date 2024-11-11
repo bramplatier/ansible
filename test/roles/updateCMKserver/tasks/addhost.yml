@@ -1,0 +1,34 @@
+---
+- name: Voeg nieuwe host toe aan /etc/hosts voor DNS-resolutie
+  lineinfile:
+    path: "/etc/hosts"
+    line: "{{ ipvanmachine }} {{ vm_name }}"
+    create: yes
+    state: present
+  become_user: root
+
+- name: Voeg nieuwe host toe aan Checkmk configuratiebestand
+  lineinfile:
+    path: "/opt/omd/sites/monitoring/etc/check_mk/conf.d/hosts.mk"
+    line: "all_hosts += ['{{ vm_name }}|{{ ipvanmachine }}']"
+    create: yes
+    state: present
+  become_user: root
+
+- name: Debug /etc/hosts inhoud
+  command: cat /etc/hosts
+  register: hosts_file_content
+  become: true
+
+- name: Show /etc/hosts file content
+  debug:
+    var: hosts_file_content.stdout
+
+- name: Debug hosts.mk inhoud
+  command: cat /opt/omd/sites/monitoring/etc/check_mk/conf.d/hosts.mk
+  register: host_file_content
+  become: true
+
+- name: Show hosts.mk file content
+  debug:
+    var: host_file_content.stdout

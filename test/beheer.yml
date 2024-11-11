@@ -63,6 +63,16 @@
         name: installCMKAgent
       tags: CMK
 
+
+- hosts: checkmk_server
+  become: true
+  vars_files:
+    - testvault.yml
+    - vmlist.yml
+  roles:
+    - name: updateCMKserver
+      tags: updateCMKserver
+
 # Fase 5
 - hosts: linux
   become: true

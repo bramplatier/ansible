@@ -54,6 +54,34 @@
     register: registration_result
     ignore_errors: yes
 
+  # - name: Add new host to Checkmk monitoring
+  #   uri:
+  #     url: "http://172.16.2.12/monitoring/check_mk/api/1.0/sites/monitoring/domain-types/host_config/collections/all"
+  #     method: POST
+  #     headers:
+  #       Content-Type: "application/json"
+  #     body: |
+  #       {
+  #         "folder": "Main directory",
+  #         "host_name": "{{ inventory_hostname }}",
+  #         "attributes": {
+  #           "ipaddress": "{{ ansible_host }}",
+  #           "tag_agent": "cmk-agent"
+  #         }
+  #       }
+  #     body_format: json
+  #     url_username: "agent_registration_user"  # Vervang dit met de juiste gebruikersnaam als nodig
+  #     url_password: "UEYWLWXSOXQFMUAQPSJL"    # Vervang dit met het Agent Registration Secret
+  #     status_code: 201
+  #   register: add_host_result
+  #   ignore_errors: yes
+
+  # - name: Display result of host registration
+  #   debug:
+  #     var: add_host_result
+
+
+
   - name: Display registration result
     debug:
       msg: >

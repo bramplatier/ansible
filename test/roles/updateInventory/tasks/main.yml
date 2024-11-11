@@ -1,8 +1,16 @@
 ---
-- name: update inventory
-  add_host:
-    name: "{{ vm_name }}"
-    ansible_host: "{{ ipvanmachine }}"
-    ansible_user: student
-    ansible_ssh_pass: BrownGreen78!
-    groups: deployed_vms
+  - name: update inventory
+    add_host:
+      name: "{{ vm_name }}"
+      ansible_host: "{{ ipvanmachine }}"
+      ansible_user: student
+      ansible_ssh_pass: BrownGreen78!
+      groups: deployed_vms
+
+  - name: Add vm to inventory file
+    lineinfile:
+      path: /home/student/ansible/test/inventory.ini  # Path inventory file
+      #insertafter: "[enrolled_vms]"  # Voegt na de groep [enrolled_vms] de nieuwe host toe
+      line: "{{ vm_name }} ansible_host={{ ipvanmachine }} ansible_user=student ansible_ssh_pass=BrownGreen78!"
+      create: yes
+      state: present

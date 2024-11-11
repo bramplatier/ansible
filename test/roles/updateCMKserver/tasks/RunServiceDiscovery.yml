@@ -1,0 +1,18 @@
+---
+- name: Voer service discovery uit voor de nieuwe host
+  ansible.builtin.command: "su - monitoring -c 'cmk -I {{ vm_name }}'"
+  become: true
+  register: service_discovery_result
+
+- name: Toon resultaat van service discovery
+  debug:
+    var: service_discovery_result.stdout
+
+- name: Voer inventory reload uit
+  ansible.builtin.command: "su - monitoring -c 'cmk -R'"
+  become: true
+  register: reload_result
+
+- name: Toon resultaat van reload
+  debug:
+    var: reload_result.stdout
